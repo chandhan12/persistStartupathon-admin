@@ -17,14 +17,14 @@ const challengesSchema=mongoose.Schema({
         required:true
     },
     deadline:{
-        type:Date,
+        type:String,
         required:true
     },
     description:{
         type:String,
         required:true
     },
-    ReviewVideo:{
+    reviewVideo:{
         type:String,
         required:true
     },
