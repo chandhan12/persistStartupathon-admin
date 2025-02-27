@@ -22,12 +22,12 @@ const createChallenge=async (req,res)=>{
         status
 
     })
-    res.status(200).send({
+    res.status(200).json({
         msg:"challenge created successfully"
     })
 
    } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
         error:error.message
 
     })
@@ -36,7 +36,64 @@ const createChallenge=async (req,res)=>{
 
 }
 
+const getChallenges=async (req,res)=>{
+   try {
+    const challenges=await Challenges.find({})
+
+    res.status(200).json({
+        challenges
+    })
+
+   } catch (error) {
+    res.status(500).json({
+        error:ErrorEvent.message
+
+    })
+    
+   }
+}
+
+const updateChallenge=async (req,res) =>{
+  try {
+    const{challengeId}=req.params
+    const {status}=req.body
+
+    if(typeof status!=="boolean"){
+        return res.status(400).json({
+            msg:"status type should be of boolean value"
+        })
+    }
+
+    const challenges=await Challenges.findByIdAndUpdate(
+        challengeId,
+        {
+           $set:{ status:status}
+
+        },
+        {new:true}
+    )
+
+    if(!challenges){
+        return res.status(404).json({
+            msg:"challenge not found"
+
+        })
+    }
+    res.status(200).json({
+        msg:`challenge updated successfully`, challenges
+    })
+    
+
+  } catch (error) {
+    res.status(500).json({
+        error:error.message
+    })
+    
+  }
+}
 module.exports={
     test,
-    createChallenge
+    createChallenge,
+    getChallenges,
+    updateChallenge
 }
