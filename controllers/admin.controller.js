@@ -1,4 +1,5 @@
 const { Challenges } = require("../Models/challenges")
+const { Completers } = require("../Models/completers")
 
 
 const test=(req,res)=>{
@@ -91,9 +92,53 @@ const updateChallenge=async (req,res) =>{
     
   }
 }
+
+const addCompleters=async (req,res)=>{
+   try {
+    const {project,image,profile,position,description,funding,profilePicture}=req.body
+    
+
+    await Completers.create({
+        project,
+        profile,
+        position,
+        image,
+        description,
+        funding,
+        profilePicture
+    })
+
+    res.status(200).json({
+        msg:"completers added successfully"
+    })
+   } catch (error) {
+    res.status(500).json({
+        error:error.message
+    })
+    
+   }
+}
+
+const getCompleters=async (req,res)=>{
+    try {
+        const completers=await Completers.find({})
+
+        res.json({
+            completers
+        })
+
+    } catch (error) {
+        error:error.message
+        
+    }
+}
+
+
 module.exports={
     test,
     createChallenge,
     getChallenges,
-    updateChallenge
+    updateChallenge,
+    addCompleters,
+    getCompleters
 }

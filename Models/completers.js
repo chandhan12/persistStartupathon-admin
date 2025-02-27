@@ -1,4 +1,5 @@
 const mongoose=require("mongoose")
+const { Challenges } = require("./challenges")
 
 
 const completersSchema=mongoose.Schema({

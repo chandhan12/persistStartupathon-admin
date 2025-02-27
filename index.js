@@ -9,6 +9,7 @@ app.use(express.json())
 
 
 app.use("/api/admin",adminRouter)
+
 const main=async ()=>{
 
     await mongoose.connect(process.env.MONGODB_URI)
