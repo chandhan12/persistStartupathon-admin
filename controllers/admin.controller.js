@@ -1,6 +1,7 @@
 const { Challenges } = require("../Models/challenges")
 const { Completers } = require("../Models/completers")
 const { Founders } = require("../Models/founders")
+const { Subscribers } = require("../Models/subscribers")
 
 
 const test=(req,res)=>{
@@ -180,6 +181,40 @@ try {
 }
 }
 
+const addSubscribers=async (req,res)=>{
+    try {
+        const {name,email}=req.body
+        await Subscribers.create({
+            name,
+            email
+        })
+
+    res.status(200).json({
+        msg:"subscriber added successfully"
+    })
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+        
+    }
+}
+
+const getSubscribers=async (req,res) =>{
+   try {
+    const subscribers=await Subscribers.find({})
+    res.status(200).json({
+        subscribers
+    })
+   } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+    
+   }
+
+}
+
 module.exports={
     test,
     createChallenge,
@@ -188,5 +223,7 @@ module.exports={
     addCompleters,
     getCompleters,
     addFounders,
-    getFounders
+    getFounders,
+    addSubscribers,
+    getSubscribers
 }

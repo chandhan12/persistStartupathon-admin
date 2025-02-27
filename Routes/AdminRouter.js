@@ -1,5 +1,5 @@
 const express =require("express")
-const { test, createChallenge, getChallenges, updateChallenge, addCompleters, getCompleters, addFounders, getFounders } = require("../controllers/admin.controller")
+const { test, createChallenge, getChallenges, updateChallenge, addCompleters, getCompleters, addFounders, getFounders, addSubscribers, getSubscribers } = require("../controllers/admin.controller")
 
 const adminRouter=express.Router()
 
@@ -11,6 +11,8 @@ adminRouter.post("/completers",addCompleters)
 adminRouter.get("/completers",getCompleters)
 adminRouter.post("/founders",addFounders)
 adminRouter.get("/founders",getFounders)
+adminRouter.post("/subscribers",addSubscribers)
+adminRouter.get("/subscribers",getSubscribers)
 
 module.exports={
     adminRouter

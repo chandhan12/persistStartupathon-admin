@@ -1,6 +1,6 @@
 const mongoose=require("mongoose")
 
-const SubscribersSchema=mongoose.Schema={
+const SubscribersSchema=mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -9,7 +9,7 @@ const SubscribersSchema=mongoose.Schema={
         type:String,
         required:true
     }
-}
+})
 
 const Subscribers=mongoose.model("Subscribers",SubscribersSchema)
 
