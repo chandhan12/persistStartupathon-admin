@@ -1,46 +1,39 @@
 const mongoose=require("mongoose")
 
 
-const challengesSchema=mongoose.Schema({
-    title:{
+const completersSchema=mongoose.Schema({
+    project:{
         type:String,
-        required:true,
-
+        required:true
     },
     image:{
         type:String,
         required:true
     },
-
-    funding:{
-        type:Number,
+    profile:{
+        type:String,
         required:true
     },
-    deadline:{
-        type:Date,
+    position:{
+        type:String,
         required:true
     },
     description:{
         type:String,
         required:true
     },
-    ReviewVideo:{
-        type:String,
+    funding:{
+        type:Number,
         required:true
     },
-    challengeVideo:{
+    profilePicture:{
         type:String,
-        required:true
-    },
-    status:{
-        type:Boolean,
         required:true
     }
-
 })
 
-const Challenges=mongoose.model("Challenges",challengesSchema)
+const Completers=mongoose.model("Completers",completersSchema)
 
 module.exports={
-    Challenges
+    Completers
 }
