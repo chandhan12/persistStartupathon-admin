@@ -1,5 +1,6 @@
 const { Challenges } = require("../Models/challenges")
 const { Completers } = require("../Models/completers")
+const { Founders } = require("../Models/founders")
 
 
 const test=(req,res)=>{
@@ -133,6 +134,51 @@ const getCompleters=async (req,res)=>{
     }
 }
 
+const addFounders=async (req,res) =>{
+    try {
+        const {name,profilePic,position,location,bio,highlights}=req.body
+
+    await Founders.create({
+        name,
+        profilePic,
+        position,
+        location,
+        bio,
+        highlights
+    })
+
+    res.status(200).json({
+        msg:"Founder added succesfully"
+    })
+
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+        
+    }
+}
+
+const getFounders=async(req,res)=>{
+try {
+    
+   const founders= await Founders.find({})
+
+   if(!founders){
+    return res.status(400).json({
+        msg:"no founders found"
+    })
+   }
+   res.status(200).json({
+    founders
+   })
+} catch (error) {
+    res.json({
+        error:error.message
+    })
+    
+}
+}
 
 module.exports={
     test,
@@ -140,5 +186,7 @@ module.exports={
     getChallenges,
     updateChallenge,
     addCompleters,
-    getCompleters
+    getCompleters,
+    addFounders,
+    getFounders
 }
