@@ -7,18 +7,18 @@ adminRouter.get("/test",test)
 
 adminRouter.post('/signin',adminSignin)
 adminRouter.post("/challenges",verifyAdmin, createChallenge)
-adminRouter.get("/challenges",verifyAdmin ,getChallenges)
+adminRouter.get("/challenges" ,getChallenges)
 adminRouter.put("/update/:challengeId",verifyAdmin,updateChallenge)
 adminRouter.delete("/delete/challenge/:challengeId",verifyAdmin,deleteChallenge)
 adminRouter.delete("/delete/completer/:completerId",verifyAdmin,deleteCompleters)
 adminRouter.delete("/delete/founder/:founderId",verifyAdmin,deleteFounders)
 
 adminRouter.post("/completers",verifyAdmin,addCompleters)
-adminRouter.get("/completers",verifyAdmin,getCompleters)
+adminRouter.get("/completers",getCompleters)
 adminRouter.post("/founders",verifyAdmin,addFounders)
-adminRouter.get("/founders",verifyAdmin,getFounders)
+adminRouter.get("/founders",getFounders)
 adminRouter.post("/subscribers",verifyAdmin,addSubscribers)
-adminRouter.get("/subscribers",verifyAdmin,getSubscribers)
+adminRouter.get("/subscribers",getSubscribers)
 
 module.exports={
     adminRouter
