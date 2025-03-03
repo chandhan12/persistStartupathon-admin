@@ -3,6 +3,7 @@ const mongoose =require("mongoose")
 const { adminRouter } = require("./Routes/AdminRouter")
 require("dotenv").config()
 const cors=require("cors")
+const { createAdmin } = require("./controllers/admin.controller")
 const cloudinary = require("cloudinary").v2;
 
 const app=express()
@@ -19,6 +20,7 @@ cloudinary.config({
 });
 
 
+// createAdmin();
 
 app.post("/upload", async (req, res) => {
     const { imageUrl } = req.body;
@@ -29,7 +31,7 @@ app.post("/upload", async (req, res) => {
             public_id: `image-${Date.now()}`
         });
 
-        console.log(cloudinaryRes.secure_url);
+      
 
         res.status(200).json({
             msg: "Image uploaded successfully",

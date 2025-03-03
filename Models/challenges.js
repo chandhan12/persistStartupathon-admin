@@ -34,7 +34,7 @@ const challengesSchema=mongoose.Schema({
     },
     status:{
         type:Boolean,
-        required:true
+        default:true
     }
 
 })

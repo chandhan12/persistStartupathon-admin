@@ -3,6 +3,7 @@ const { Challenges } = require("../Models/challenges")
 const { Completers } = require("../Models/completers")
 const { Founders } = require("../Models/founders")
 const { Subscribers } = require("../Models/subscribers")
+const bcrypt = require('bcrypt')
 require("dotenv").config()
 const jwt=require("jsonwebtoken")
 
@@ -14,61 +15,63 @@ const test=(req,res)=>{
 }
 
 
-const adminSignup = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const existingEmail = await Admin.findOne({ email });
-
-        if (existingEmail) {
-            return res.status(400).json({ error: "Email already exists" });
-        }
-
-        
-        const response = await Admin.create({ email, password });
-
-        res.status(201).json({
-            msg: "Admin signup successful",
-           
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+// creating admin credentials in database
+const createAdmin = async () => {
+    const existingAdmin = await Admin.findOne({ email: process.env.ADMIN_EMAIL });
+  
+    if (!existingAdmin) {
+      const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+      const admin = new Admin({ email: process.env.ADMIN_EMAIL, password: hashedPassword });
+      await admin.save();
+      console.log("Admin user created");
+    } else {
+      console.log("Admin already exists");
     }
-};
+  };
+  
+ 
+
 
 const adminSignin=async (req,res)=>{
-   try {
-    const {email,password}=req.body
-    console.log(email)
-    console.log(password)
+    const { email, password } = req.body;
 
-    const existingUser=await Admin.findOne({
-        email
-    })
-
-    if(!existingUser){
-       return  res.status(400).json({
-            error:"invalid credentials"
-        })
+    try {
+      const admin = await Admin.findOne({ email });
+      if (!admin) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+  
+     
+      const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET);
+  
+      res.json({ message: 'Login successful', token });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
     }
-
-    const passwordMatched=existingUser.password===password
-
-    if(passwordMatched){
-        const token=jwt.sign({userId:existingUser._id},process.env.JWT_SECRET)
-
-        res.status(200).json({
-            msg:"admin login successfull",
-            token
-        })
-    }
-   } catch (error) {
-    res.status(500).json({
-        error:error.message
-    })
-   }
 }
+
+const verifyAdmin = (req, res, next) => {
+    const token = req.headers["authorization"]?.split(" ")[1];
+  
+    
+    if (!token) {
+      return res.status(401).json({ message: "Access Denied: No token provided" });
+    }
+  
+    try {
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
+      req.adminId = verified.id
+      next();
+    } catch (error) {
+      res.status(403).json({ message: "Invalid or Expired Token" });
+    }
+  };
+
 const createChallenge=async (req,res)=>{
    try {
     const {title,image,funding,deadline,description,reviewVideo,challengeVideo,status}=req.body
@@ -347,8 +350,10 @@ const getSubscribers=async (req,res) =>{
 
 module.exports={
     test,
-    adminSignup,
+    // adminSignup,
+    createAdmin,
     adminSignin,
+    verifyAdmin,
     createChallenge,
     getChallenges,
     deleteChallenge,
