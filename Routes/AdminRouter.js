@@ -17,7 +17,7 @@ adminRouter.post("/completers",verifyAdmin,addCompleters)
 adminRouter.get("/completers",getCompleters)
 adminRouter.post("/founders",verifyAdmin,addFounders)
 adminRouter.get("/founders",getFounders)
-adminRouter.post("/subscribers",verifyAdmin,addSubscribers)
+adminRouter.post("/subscribers",addSubscribers)
 adminRouter.get("/subscribers",getSubscribers)
 
 module.exports={
