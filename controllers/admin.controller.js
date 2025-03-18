@@ -177,6 +177,22 @@ const updateChallenge=async (req,res) =>{
   }
 }
 
+const getChallenge=async (req,res)=>{
+    try {
+        const {id}=req.params
+
+    const item=await Challenges.findById(id)
+
+    res.status(200).json({
+        item
+    })
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+    }
+
+}
 const addCompleters=async (req,res)=>{
    try {
     const {project,image,profile,position,description,funding,profilePicture}=req.body
@@ -244,6 +260,22 @@ const deleteCompleters=async (req,res)=>{
 
 }
 
+const getCompleted=async (req,res)=>{
+    try {
+        const {id}=req.params
+
+    const item=await Completers.findById(id)
+
+    res.status(200).json({
+        item
+    })
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+    }
+
+}
 const addFounders=async (req,res) =>{
     try {
         const {name,profilePic,position,location,bio,highlights}=req.body
@@ -314,6 +346,23 @@ const deleteFounders=async (req,res)=>{
 
 }
 
+const getFounder=async (req,res)=>{
+    try {
+        const {id}=req.params
+
+    const item=await Founders.findById(id)
+
+    res.status(200).json({
+        item
+    })
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+    }
+
+}
+
 const addSubscribers=async (req,res)=>{
     try {
         const {name,email}=req.body
@@ -358,11 +407,14 @@ module.exports={
     getChallenges,
     deleteChallenge,
     updateChallenge,
+    getChallenge,
     addCompleters,
     getCompleters,
     deleteCompleters,
+    getCompleted,
     addFounders,
     getFounders,
+    getFounder,
     deleteFounders,
     addSubscribers,
     getSubscribers
